@@ -104,24 +104,35 @@ class NotificationRemoteService {
   /// },
   /// ```
   Future<void> registerNotificationChannel() async {
-    final noti = FlutterLocalNotificationsPlugin();
-    const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const iosInit = IOSInitializationSettings();
-    const initSetting =
-        InitializationSettings(android: androidInit, iOS: iosInit);
-
-    await noti.initialize(initSetting);
-    const androidNotificationChannel = AndroidNotificationChannel(
-      'push',
-      'Pushlol',
-      description: 'Receive a push lol noti',
-      importance: Importance.max,
-      enableLights: true,
-      ledColor: Colors.red,
-    );
-    await noti
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(androidNotificationChannel);
-  }
+      final noti = FlutterLocalNotificationsPlugin();
+      const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
+      const iosInit = IOSInitializationSettings();
+      const initSetting =
+          InitializationSettings(android: androidInit, iOS: iosInit);
+  
+      await noti.initialize(initSetting);
+      const androidNotificationChannel = AndroidNotificationChannel(
+        'push',
+        'Pushlol',
+        description: 'Receive a push lol noti',
+        importance: Importance.max,
+        enableLights: true,
+        ledColor: Colors.red,
+        playSound: true,
+        enableVibration: true,
+        fullScreenIntent: true,
+        actionButtons: [
+          AndroidNotificationActionButton(
+            'key',
+            'Send',
+            icon: null,
+            buttonType: AndroidNotificationActionButtonType.InputField,
+          ),
+        ],
+      );
+      await noti
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(androidNotificationChannel);
+    }
 }
